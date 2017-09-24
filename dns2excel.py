@@ -117,6 +117,7 @@ class DNSToExcel():
             # DNS answer section
             dns_answer = OrderedDict()
             record_counter = OrderedDict()
+            # initial dns records
             record_counter['CNAME'] = 0
             record_counter['A'] = 0
             for i in dns_message.answer:
@@ -126,9 +127,8 @@ class DNSToExcel():
                 answer_value = list()
                 for rd in i:
                     answer_value.append(rd.to_text())
-
                 if answer_type not in record_counter:
-                    record_counter.update({answer_type: 1})
+                    record_counter[answer_type] = 1
                 else:
                     record_counter[answer_type] += 1
                 c = record_counter[answer_type]
@@ -207,8 +207,9 @@ class DNSToExcel():
                         # print('Problem at process' + e.message)
                         host_row['status'] = e.message
                         self._dns_table.append(host_row)
-                    print('HOST: %s - [%s]' % (host_row['hostname'],
-                                               host_row['status']))
+                    print('HOST: %s - [%s]{%s}' % (host_row['hostname'],
+                                                   host_row['record'],
+                                                   host_row['status']))
         except:
             raise
         return 0
