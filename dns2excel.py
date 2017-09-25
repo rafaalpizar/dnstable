@@ -10,16 +10,18 @@ Author: Rafael Alpizar L
 
 Modules required: dnsknife, collections, pandas, openpyxl
 
+Notes: DNS flags infor in https://www.ietf.org/rfc/rfc1035
+
 Version: 1.0
 
 Change log:
-2017-09-22 - First version
+2017-09-24 - First version
 '''
 
 try:
     from dnsknife.resolver import Resolver, system_resolver
     from dns import flags, opcode, rcode, rdataclass, rdatatype
-#    from dns.resolver import NoAnswer
+    from datetime import datetime
     from collections import OrderedDict
     import argparse
     import pandas as pd
@@ -30,26 +32,85 @@ except Exception as e:
 class ExcelFileError(Exception):
     pass
 
+
+class DNSRecords():
+    """Handle a list of DNS records to resolve
+    This class have a default DNS records list and can be set
+    from a list object o str object (comma separated)
+    """
+    _dns_records = None
+    _DNS_RECORDS_DEFAULT = ['A', 'AAAA']
+
+    def __init__(self, records=None):
+        """Init DNS records list
+        Keywords:
+        records -- list or str
+        """
+        self._dns_records = self._DNS_RECORDS_DEFAULT
+
+    def set_dns_records(self, records):
+        """
+        Keyword Arguments:
+        records -- list or str
+
+        Returns:
+        int -- 0
+        """
+        if isinstance(records, str):
+            self._dns_records = records.upper().split(',')
+        elif isinstance(records, list):
+            self._dns_records = records
+        else:
+            raise TypeError('DNS records must be a list type')
+
+    def get_dns_records(self):
+        """Return DNS records as list object
+        Returns:
+        list
+        """
+        return self._dns_records
+
+    def __str__(self):
+        """String Representation
+        Returns:
+        str
+        """
+        return ','.join(self.get_dns_records())
+
+    def to_text(self):
+        """String Representation
+        """
+        return self.__str__()
+
+
 class DNSToExcel():
 
     _DNS_TIMEOUT_SECONDS = 5
+    # used in case no DNSRecords class passed a parameter
     _DNS_RECORDS_RESOLVE = ['A', 'AAAA']
     _hosts_list = None
     _excel_file_name = None
     _dns_server = None
     _set_dns_server_custom = False
     _dns_table = list()
+    _dns_records = list()
 
-    def __init__(self, hosts_list, excel_file_name, dns_server_custom=None):
+    def __init__(self, hosts_list,
+                 excel_file_name, dns_server=None, dns_records=None):
         """Basic information for the class
         Ketword Argumnts:
         hosts_list      -- list
         excel_file_name -- str
         dns_server_ip   -- str
+        dns_records     -- DNSRecords
         """
         self._set_hosts_list(hosts_list)
         self._set_excel_file_name(excel_file_name)
-        self._set_dns_server(dns_server_custom)
+        self._set_dns_server(dns_server)
+        if isinstance(dns_records, DNSRecords):
+            self._dns_records = dns_records.get_dns_records()
+        else:
+            self._dns_records = self._DNS_RECORDS_RESOLVE
 
     def _set_hosts_list(self, hosts_list):
         """Sets the Hosts list verify type
@@ -116,10 +177,9 @@ class DNSToExcel():
             dns_payload = dns_message.payload
             # DNS answer section
             dns_answer = OrderedDict()
-            record_counter = OrderedDict()
-            # initial dns records
+            # initial dns records counter
+            record_counter = dict.fromkeys(self._dns_records, 0)
             record_counter['CNAME'] = 0
-            record_counter['A'] = 0
             for i in dns_message.answer:
                 answer_type = rdatatype.to_text(i.rdtype)
                 answer_class = rdataclass.to_text(i.rdclass)
@@ -191,11 +251,12 @@ class DNSToExcel():
         try:
             for host in self._hosts_list:
                 # print(host)
-                for record in self._DNS_RECORDS_RESOLVE:
+                for record in self._dns_records:
                     # print record
                     host_row = OrderedDict()
-                    host_row['hostname'] = host
+                    host_row['datetime'] = datetime.today()
                     host_row['dns_server'] = self._dns_server
+                    host_row['hostname'] = host
                     host_row['status'] = ''
                     host_row['record'] = record
                     try:
@@ -219,7 +280,8 @@ class DNSToExcel():
             self._excel_file_name, sheet_name='DNS Resolution')
         return 0
 
-def main(hosts_file, excel_file_name, dns_server_custom=None):
+
+def main(hosts_file, excel_file_name, dns_server=None, dns_records=None):
     """Run the program
 
     Keyword Arguments:
@@ -231,7 +293,8 @@ def main(hosts_file, excel_file_name, dns_server_custom=None):
     int = 0
     """
     hosts_list = hosts_file.read().splitlines()
-    d = DNSToExcel(hosts_list, excel_file_name, dns_server_custom)
+    d = DNSToExcel(hosts_list, excel_file_name, dns_server=dns_server,
+                   dns_records=dns_records)
     print('---------- DNS Resolution start ----------')
     d.dns_process()
     print('---------- Excel export start ----------')
@@ -239,8 +302,11 @@ def main(hosts_file, excel_file_name, dns_server_custom=None):
     print('---------- Process end ----------')
 
 
+
 if __name__ == '__main__':
     try:
+        # start the default DNSRecords
+        dns_records = DNSRecords()
         # Parameters
         cmd_param = argparse.ArgumentParser(
             description='''
@@ -256,20 +322,33 @@ if __name__ == '__main__':
                                required=True,
                                help='This is the result xlsx file.')
 
-        cmd_param.add_argument('--dns_server', '-d', dest='dnsserver',
+        cmd_param.add_argument('--dnsserver', '-d', dest='dnsserver',
                                metavar='ip|host', type=str,
                                required=False, default=None,
                                help='Set a custom dns server to be used in the resolution.')
+
+        cmd_param.add_argument('--recods', '-r', dest='records',
+                               metavar='rec1[,rec2,...]', type=str,
+                               required=False, default=None,
+                               help='Records to be queried to DNS server (default %s).' % dns_records.to_text())
 
         param = cmd_param.parse_args()
         hosts_file = param.inputfile
         excel_file = param.xlsxfile
         dns_server = param.dnsserver
-        main(hosts_file, excel_file, dns_server)
+        records_str = param.records
+        if records_str is not None:
+            dns_records.set_dns_records(records_str)
+
+        print records_str
+        print dns_records
+        main(hosts_file, excel_file,
+             dns_server=dns_server,
+             dns_records=dns_records)
         hosts_file.close()
     except IOError as e:
         print(e)
-    except Exception as e:
-        print(e.message)
-#    except:
-#        raise
+    # except Exception as e:
+    #     print(e.message)
+    except:
+        raise
