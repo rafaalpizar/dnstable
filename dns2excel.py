@@ -347,7 +347,7 @@ if __name__ == '__main__':
         hosts_file.close()
     except IOError as e:
         print(e)
-    # except Exception as e:
-    #     print(e.message)
-    except:
-        raise
+    except Exception as e:
+        print(e.message)
+    # except:
+    #     raise
