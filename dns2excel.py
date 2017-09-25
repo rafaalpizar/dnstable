@@ -10,7 +10,7 @@ Author: Rafael Alpizar L
 
 Modules required: dnsknife, collections, pandas, openpyxl
 
-Notes: DNS flags infor in https://www.ietf.org/rfc/rfc1035
+Notes: DNS flags info in https://www.ietf.org/rfc/rfc1035
 
 Version: 1.0
 
