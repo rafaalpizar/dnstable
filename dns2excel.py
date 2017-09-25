@@ -1,8 +1,7 @@
 #!/usr/bin/python
 '''
-Program to do a DNS resolution over a list of host
-reading from a text file and export the results into
-a Excel File.
+Program to do a DNS resolution over a list of host stored in a text file
+and the results are saved into an Excel File.
 
 Usage: dns2excel.py -i hostsfile.txt -o dns_results.xlsx
 
