@@ -32,7 +32,7 @@ class ExcelFileError(Exception):
     pass
 
 
-class DNSRecords():
+class DNSRecords(object):
     """Handle a list of DNS records to resolve
     This class have a default DNS records list and can be set
     from a list object o str object (comma separated)
@@ -339,8 +339,8 @@ if __name__ == '__main__':
         if records_str is not None:
             dns_records.set_dns_records(records_str)
 
-        print records_str
-        print dns_records
+#        print records_str
+#        print dns_records
         main(hosts_file, excel_file,
              dns_server=dns_server,
              dns_records=dns_records)
