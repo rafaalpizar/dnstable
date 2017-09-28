@@ -326,7 +326,7 @@ if __name__ == '__main__':
                                metavar='ip|host', type=str,
                                required=False, default=None,
                                help='Set a custom dns server to be used in the resolution.')
-        cmd_param.add_argument('--recods', '-r', dest='records',
+        cmd_param.add_argument('--records', '-r', dest='records',
                                metavar='rec1[,rec2,...]', type=str,
                                required=False, default=None,
                                help='Records to be queried to DNS server (default %s).' % dns_records.to_text())
