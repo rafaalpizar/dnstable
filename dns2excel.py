@@ -82,11 +82,11 @@ class DNSRecords(object):
         return self.__str__()
 
 
-class DNSToExcel():
+class DNSToExcel(object):
 
-    _DNS_TIMEOUT_SECONDS = 5
     # used in case no DNSRecords class passed a parameter
     _DNS_RECORDS_RESOLVE = ['A', 'AAAA']
+    _dns_timeout_seconds = 5
     _hosts_list = None
     _excel_file_name = None
     _dns_server = None
@@ -95,7 +95,8 @@ class DNSToExcel():
     _dns_records = list()
 
     def __init__(self, hosts_list,
-                 excel_file_name, dns_server=None, dns_records=None):
+                 excel_file_name, dns_server=None,
+                 dns_records=None, timeout=5):
         """Basic information for the class
         Ketword Argumnts:
         hosts_list      -- list
@@ -110,6 +111,7 @@ class DNSToExcel():
             self._dns_records = dns_records.get_dns_records()
         else:
             self._dns_records = self._DNS_RECORDS_RESOLVE
+        self._dns_timeout_seconds = timeout
 
     def _set_hosts_list(self, hosts_list):
         """Sets the Hosts list verify type
@@ -230,7 +232,7 @@ class DNSToExcel():
         """
         dns_response = OrderedDict()
         try:
-            r = Resolver(timeout=self._DNS_TIMEOUT_SECONDS)
+            r = Resolver(timeout=self._dns_timeout_seconds)
             if self._set_dns_server_custom:
                 dns_query = r.query_at(hostname, record, self._dns_server)
             else:
@@ -280,7 +282,8 @@ class DNSToExcel():
         return 0
 
 
-def main(hosts_file, excel_file_name, dns_server=None, dns_records=None):
+def main(hosts_file, excel_file_name, dns_server=None,
+         dns_records=None, timeout=5):
     """Run the program
 
     Keyword Arguments:
@@ -315,35 +318,36 @@ if __name__ == '__main__':
                                metavar='hosts_list_file_name',
                                type=file, required=True,
                                help='This files contains the hosts to be resolved, one host per line.')
-
         cmd_param.add_argument('--out', '-o', dest='xlsxfile',
                                metavar='excel_file_name', type=str,
                                required=True,
                                help='This is the result xlsx file.')
-
         cmd_param.add_argument('--dnsserver', '-d', dest='dnsserver',
                                metavar='ip|host', type=str,
                                required=False, default=None,
                                help='Set a custom dns server to be used in the resolution.')
-
         cmd_param.add_argument('--recods', '-r', dest='records',
                                metavar='rec1[,rec2,...]', type=str,
                                required=False, default=None,
                                help='Records to be queried to DNS server (default %s).' % dns_records.to_text())
+        cmd_param.add_argument('--timeout', '-t', dest='timeout',
+                               metavar='seconds', type=int,
+                               required=False, default=5,
+                               help='Number of seconds to wait for a DNS response.')
 
         param = cmd_param.parse_args()
         hosts_file = param.inputfile
         excel_file = param.xlsxfile
         dns_server = param.dnsserver
         records_str = param.records
+        timeout = param.timeout
         if records_str is not None:
             dns_records.set_dns_records(records_str)
 
-#        print records_str
-#        print dns_records
         main(hosts_file, excel_file,
              dns_server=dns_server,
-             dns_records=dns_records)
+             dns_records=dns_records,
+             timeout=timeout)
         hosts_file.close()
     except IOError as e:
         print(e)
