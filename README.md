@@ -117,4 +117,4 @@ This link contains the source code and demo files:
 <https://git.source.akamai.com/users/ralpizar/repos/dnstable>
 
 
-[excel_img]: https://git.source.akamai.com/users/ralpizar/repos/dnstable/browse/help/excel_img.png
+[excel_img]: https://git.source.akamai.com/users/ralpizar/repos/dnstable/raw/help/excel_img.png
