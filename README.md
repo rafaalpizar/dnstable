@@ -38,7 +38,6 @@ In order to run this program you will need this install in your computer:
    mycorporation.intuit.com
    paytrust.intuit.com
    ```
-   ![hostsfile.txt][hostsfiletxt_img]
 
 1. Execute the script as:
    ```bash
@@ -118,4 +117,4 @@ This link contains the source code and demo files:
 <https://git.source.akamai.com/users/ralpizar/repos/dnstable>
 
 
-[excel_img]: help/hoststiles.txt.png
+[excel_img]: https://git.source.akamai.com/users/ralpizar/repos/dnstable/browse/help/excel_img.png
