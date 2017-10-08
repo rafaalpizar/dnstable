@@ -46,7 +46,7 @@ In order to run this program you will need this install in your computer:
 
 1. Wait until the process complete.
 
-   The result is:
+   The script output is:
    ```bash
    $ dns2excel.py -i hostslist.txt -o hostslist.xlsx
    ---------- DNS Resolution start ----------
@@ -74,13 +74,13 @@ In order to run this program you will need this install in your computer:
    ---------- Process end ----------
    ```
 
-   List result:
+   List file result:
    ```bash
    $ ls
    hostslist.txt   hostslist.xlsx
    ```
 
-1. Open the Excel file: `hostsfile.txt`.
+1. Open the Excel file: `hostsfile.xlsx`.
    Result Excel File:
    ![Excel screenshot][excel_img]   
 
@@ -112,7 +112,7 @@ optional arguments:
 ```
 
 
-## GIT
+## Script download
 
 This link contains the source code and demo files:
 <https://git.source.akamai.com/users/ralpizar/repos/dnstable>
