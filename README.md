@@ -1,4 +1,4 @@
-# Script to do dns resolution and saves to excel: dns2excel.py
+# Script to do DNS resolution and saves to excel: dns2excel.py
 
 ## Introduction
 This tool receives a list of hosts from a text file and its output is a Excel file ready for analysis.
