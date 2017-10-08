@@ -81,6 +81,7 @@ In order to run this program you will need this install in your computer:
    ```
 
 1. Open the Excel file: `hostsfile.xlsx`.
+
    Result Excel File:
    ![Excel screenshot][excel_img]   
 
