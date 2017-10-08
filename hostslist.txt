@@ -8,4 +8,3 @@ lacerte.intuit.com
 m.intuit.com
 mycorporation.intuit.com
 paytrust.intuit.com
-www.clicktal.com
