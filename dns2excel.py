@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/local/bin/python3
 '''
 Program to do a DNS resolution over a list of host stored in a text file
 and the results are saved into an Excel File.
@@ -11,9 +11,10 @@ Modules required: dnsknife, collections, pandas, openpyxl
 
 Notes: DNS flags info in https://www.ietf.org/rfc/rfc1035
 
-Version: 1.0
+Version: 1.1
 
 Change log:
+2018-05-11 - Upgrade to python3
 2017-09-24 - First version
 '''
 
@@ -25,7 +26,7 @@ try:
     import argparse
     import pandas as pd
 except Exception as e:
-    print('\nPython module missing [ %s ]\n' % e.message)
+    print('\nPython module missing [ {} ]\n'.format(e))
     exit(1)
 
 class ExcelFileError(Exception):
@@ -267,7 +268,7 @@ class DNSToExcel(object):
                         host_row['status'] = 'The DNS has responded'
                     except Exception as e:
                         # print('Problem at process' + e.message)
-                        host_row['status'] = e.message
+                        host_row['status'] = str(e)
                         self._dns_table.append(host_row)
                     print('HOST: %s - [%s]{%s}' % (host_row['hostname'],
                                                    host_row['record'],
@@ -316,7 +317,7 @@ if __name__ == '__main__':
             over a list of hostnames readed from a text file.''')
         cmd_param.add_argument('--in', '-i', dest='inputfile',
                                metavar='hosts_list_file_name',
-                               type=file, required=True,
+                               type=open, required=True,
                                help='This files contains the hosts to be resolved, one host per line.')
         cmd_param.add_argument('--out', '-o', dest='xlsxfile',
                                metavar='excel_file_name', type=str,
@@ -351,7 +352,7 @@ if __name__ == '__main__':
         hosts_file.close()
     except IOError as e:
         print(e)
-    except Exception as e:
-        print(e.message)
+    #except Exception as e:
+    #    print(e)
     # except:
     #     raise
