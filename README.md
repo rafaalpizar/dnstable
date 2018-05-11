@@ -6,7 +6,7 @@ This tool receives a list of hosts from a text file and its output is a Excel fi
 ## Prerequisites
 In order to run this program you will need this install in your computer:
 
-1. Python 2.7
+1. Python 3.6
 
 1. pip
    ```bash
