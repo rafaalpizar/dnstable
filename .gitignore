@@ -1,3 +1,5 @@
 #*
-venv/
 *~
+venv/
+dnsknife/__pycache__/
+

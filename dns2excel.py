@@ -11,9 +11,10 @@ Modules required: dnsknife, collections, pandas, openpyxl
 
 Notes: DNS flags info in https://www.ietf.org/rfc/rfc1035
 
-Version: 1.1
+Version: 1.2
 
 Change log:
+2022-09-08 - Added dnsknife module localy, got from https://github.com/Gandi/dnsknife
 2018-05-11 - Upgrade to python3
 2017-09-24 - First version
 '''
