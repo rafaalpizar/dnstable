@@ -113,5 +113,5 @@ optional arguments:
 ```
 
 
-[excel_img]: blob/master/help/excel_img.png
+[excel_img]: help/excel_img.png
 
