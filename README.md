@@ -83,7 +83,7 @@ In order to run this program you will need this install in your computer:
 1. Open the Excel file: `hostsfile.xlsx`.
 
    Result Excel File:
-   ![Excel screenshot][excel_img]   
+   ![Excel screenshot][excel_img]
 
 
 ## Additional options for the script
@@ -113,10 +113,5 @@ optional arguments:
 ```
 
 
-## Script download
+[excel_img]: blob/master/help/excel_img.png
 
-This link contains the source code and demo files:
-<https://git.source.akamai.com/users/ralpizar/repos/dnstable>
-
-
-[excel_img]: https://git.source.akamai.com/users/ralpizar/repos/dnstable/raw/help/excel_img.png
