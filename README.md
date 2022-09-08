@@ -111,6 +111,51 @@ optional arguments:
                         Number of seconds to wait for a DNS response (default 5s).
 ```
 
+## Info about DNS flags (from RFC 1035, section 4.1.1)
+
+The header contains the following fields:
+```
+                                    1  1  1  1  1  1
+      0  1  2  3  4  5  6  7  8  9  0  1  2  3  4  5
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+    |                      ID                       |
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+    |QR|   Opcode  |AA|TC|RD|RA|   Z    |   RCODE   |
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+    |                    QDCOUNT                    |
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+    |                    ANCOUNT                    |
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+    |                    NSCOUNT                    |
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+    |                    ARCOUNT                    |
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+```
+
+Some flags:
+```
+QR              A one bit field that specifies whether this message is a
+                query (0), or a response (1).
+				
+AA              Authoritative Answer - this bit is valid in responses,
+                and specifies that the responding name server is an
+                authority for the domain name in question section.
+
+                Note that the contents of the answer section may have
+                multiple owner names because of aliases.  The AA bit
+                corresponds to the name which matches the query name, or
+                the first owner name in the answer section.
+
+RD              Recursion Desired - this bit may be set in a query and
+                is copied into the response.  If RD is set, it directs
+                the name server to pursue the query recursively.
+                Recursive query support is optional.
+
+RA              Recursion Available - this be is set or cleared in a
+                response, and denotes whether recursive query support is
+                available in the name server.
+```
+
 
 [excel_img]: help/excel_img.png
 
