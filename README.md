@@ -10,15 +10,14 @@ In order to run this program you will need this install in your computer:
 
 1. pip
    ```bash
-   $ sudo easy_install pip
+   Install pip (depends on your OS/distro)
    ```
 
 1. Python modules: dnsknife, collections, pandas, openpyxl
    ```bash
-   $ pip install --user dnsknife
-   $ pip install --user collections
-   $ pip install --user pandas
-   $ pip install --user openpyxl
+   $ python 3 -m pip install --user collections
+   $ python 3 -m pip install --user pandas
+   $ python 3 -m pip install --user openpyxl
    ```
 
 ## How to use it
