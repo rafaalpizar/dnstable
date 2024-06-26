@@ -253,7 +253,10 @@ class DNSToExcel(object):
         list of OrderedDict
         """
         try:
+            count = 0
+            host_count = 0
             for host in self._hosts_list:
+                host_count += 1
                 # print(host)
                 for record in self._dns_records:
                     # print record
@@ -272,9 +275,11 @@ class DNSToExcel(object):
                         # print('Problem at process' + e.message)
                         host_row['status'] = str(e)
                         self._dns_table.append(host_row)
-                    print('HOST: %s - [%s]{%s}' % (host_row['hostname'],
-                                                   host_row['record'],
-                                                   host_row['status']))
+                    count += 1
+                    print('%-5d - HOST[%5d]: %s - [%s]{%s}' % (count, host_count,
+                                                               host_row['hostname'],
+                                                               host_row['record'],
+                                                               host_row['status']))
         except:
             raise
         return 0
