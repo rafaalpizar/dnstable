@@ -1,4 +1,5 @@
-#!/usr/local/bin/python3
+#!/usr/bin/env python3
+
 '''
 Program to do a DNS resolution over a list of host stored in a text file
 and the results are saved into an Excel File.
